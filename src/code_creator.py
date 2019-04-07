@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 import cv2
+import os
 import numpy as np
+from html_tags import Html
 
 class CodeCreator(object):
     def __init__(self, locations, result):
@@ -19,9 +21,9 @@ class CodeCreator(object):
             #Taglar yanyana mı?
             if(comp_rect[3] > self.locations[i,1]):
                 same_line_tags.append([self.locations[i,0], types[i]])
+                continue
             else:
                 br_height = self.locations[i,1] - comp_rect[3]
-                print(br_height)
                 #Alt satırdaki yanında olmayan tagı diğerleri ile karşılaştırmak için seç
                 comp_rect = self.locations[i]
 
@@ -29,7 +31,7 @@ class CodeCreator(object):
                 same_line_tags = same_line_tags[same_line_tags[:,0].argsort()]
                 same_line_tags = same_line_tags[::-1]
                 
-                output += self.get_item_code(same_line_tags[:,-1])
+                output += self.get_item_code(same_line_tags[:,-1], br_height)
                 same_line_tags = []
                 same_line_tags.append([self.locations[i,0], types[i]])
                 continue
@@ -39,30 +41,39 @@ class CodeCreator(object):
             same_line_tags = same_line_tags[::-1]
             output += self.get_item_code(same_line_tags[:,-1])
 
+        
         html_output = ""
-        f = open("header.html","r")
+        path = os.path.join("web","header.html")
+        f = open(path,"r")
         html_output += f.read()
         f.close()
         
         html_output += output
 
-        f = open("footer.html","r")
+        path = os.path.join("web","footer.html")
+        f = open(path,"r")
         html_output += f.read()
         f.close()
         
-        print html_output
 
-    def get_item_code(self, types):
+        f = open("output.html", "w")
+        f.write(html_output)
+        f.close()
+        
+
+    def get_item_code(self, types, br_height):
         output = ""
+        html = Html()
         for t in types:
             if(t == 'Button'):
-                output += "<input type='submit' value='dk923d'>"
+                output += html.get_button(100,40,"123123")
             elif(t == 'Text'):
-                output += "<input type='text'>"
+                output += html.get_textbox(100,40)
             elif(t == 'Line'):
-                output += "e32e23 "
+                output += "e32e23"
             elif(t == 'Image'):
-                output += "<img src='image.png' width=200 height=200>"
+                output += html.get_image(200,200)
         
-        output += "<br>"
+        br = "<hr style='height:{}pt; visibility:hidden;' />"
+        output += br.format(br_height)
         return output
