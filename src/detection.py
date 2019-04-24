@@ -25,18 +25,17 @@ class TagDetector(object):
         threshImage = cv2.medianBlur(threshImage,5)
         aGaussThreshold = cv2.adaptiveThreshold(threshImage.copy(), 255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2)
 
-    
         data = []
         locations = []
         #new_img = None
         idx = 0
         for i, ctr in enumerate(sorted_ctrs):
             x, y, w, h = cv2.boundingRect(ctr)
-            if(cv2.contourArea(ctr) > 150):
-                roi = aGaussThreshold[y-5:y+h+5, x-5:x+w+5]
+            if(cv2.contourArea(ctr) > 100):
+                roi = aGaussThreshold[y:y+h, x:x+w]
                 cv2.imwrite("tmp.png",roi)
                 new_img = cv2.imread("tmp.png")
-                new_img = cv2.resize(new_img,(100 ,100))
+                new_img = cv2.resize(new_img,(120 ,80))
                 #koordinatlar
                 locations.append([x,y,x+w,y+h])
                 data.append(new_img)

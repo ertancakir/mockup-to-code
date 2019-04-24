@@ -19,13 +19,18 @@ class DeepModel(object):
 
     def create_model(self):
         model = Sequential()
-        model.add(Conv2D(32, (3, 3), padding='same', activation='relu', input_shape = (100,100,3)))
+        model.add(Conv2D(16, (3, 3), padding='same', activation='relu', input_shape = (80,120,3)))
+        model.add(Conv2D(16, (3, 3), activation='relu'))
+        model.add(MaxPooling2D(pool_size=(2, 2)))
+        model.add(Dropout(0.25))
+
+        model.add(Conv2D(32, (3, 3), padding='same', activation='relu', input_shape = (80,120,3)))
         model.add(Conv2D(32, (3, 3), activation='relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
 
-        model.add(Conv2D(32, (3, 3), padding='same', activation='relu'))
-        model.add(Conv2D(32, (3, 3), activation='relu'))
+        model.add(Conv2D(16, (3, 3), padding='same', activation='relu'))
+        model.add(Conv2D(16, (3, 3), activation='relu'))
         model.add(MaxPooling2D(pool_size=(2, 2)))
         model.add(Dropout(0.25))
 
@@ -41,7 +46,7 @@ class DeepModel(object):
         data = []
         for file in files:
             image = cv2.imread(file)
-            image = cv2.resize(image,(100 ,100))
+            #image = cv2.resize(image,(100 ,100))
             data.append(image)
         data = np.array(data, dtype = 'float32')
         return data
@@ -63,7 +68,7 @@ class DeepModel(object):
         encoder.fit(data[:,1])
         encoded_train_label = encoder.transform(data[:,1])
         train_labels_one_hot = np_utils.to_categorical(encoded_train_label)
-
+        
         #Test data
         csv_data = pd.read_csv('test.csv', header = None)
         data = csv_data.values
@@ -83,11 +88,11 @@ class DeepModel(object):
         return train_data, train_labels_one_hot, test_data ,test_labels_one_hot
         
     def train_model(self,train_data, train_labels_one_hot):
-        #sgd = optimizers.SGD(lr=0.01, decay=1e-6, momentum=0.2, nesterov=True)
+        #sgd = optimizers.SGD(lr=0.4, decay=1e-6, momentum=0.8, nesterov=True)
         del self.model
         self.model = self.create_model()
         self.model.compile(optimizer="rmsprop", loss='categorical_crossentropy', metrics=['accuracy'])
-        history = self.model.fit(train_data, train_labels_one_hot, batch_size=32, epochs=10, validation_split=(0.1))
+        history = self.model.fit(train_data, train_labels_one_hot, batch_size=32, epochs=10)
         self.model.save("my_model.h5")
         
 
@@ -104,10 +109,11 @@ class DeepModel(object):
         for o in output:
             largest_value = max(o)
             indis = list(o).index(largest_value)
-            if(largest_value > 0.60):
+            if(largest_value > 0.6):
                 result.append([idx, self.labels[indis]])
             idx += 1
         result = np.array(result)
+        print result
         return result
 
     def load_weight(self):

@@ -96,21 +96,3 @@ class CodeCreator(object):
         f = open("output.html", "w")
         f.write(html_output)
         f.close()
-        
-
-    def get_item_code(self, types, br_height):
-        output = ""
-        html = Html()
-        for t in types:
-            if(t == 'Button'):
-                output += html.get_button(100,40,"123123")
-            elif(t == 'Text'):
-                output += html.get_textbox(100,40)
-            elif(t == 'Line'):
-                output += html.get_text("asdasdasd")
-            elif(t == 'Image'):
-                output += html.get_image(200,200)
-        
-        br = "<hr style='height:{}pt; visibility:hidden;' />"
-        output += br.format(br_height)
-        return output
