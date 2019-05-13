@@ -20,18 +20,16 @@ class TagDetector(object):
         ctrs, hier = cv2.findContours(img_dilation.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE) 
         #sort contours 
         sorted_ctrs = sorted(ctrs, key=lambda ctr: cv2.boundingRect(ctr)[1])
-
         threshImage = cv2.imread(self.path,0)
         threshImage = cv2.medianBlur(threshImage,5)
         aGaussThreshold = cv2.adaptiveThreshold(threshImage.copy(), 255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY,11,2)
-
         data = []
         locations = []
         #new_img = None
         idx = 0
         for i, ctr in enumerate(sorted_ctrs):
             x, y, w, h = cv2.boundingRect(ctr)
-            if(cv2.contourArea(ctr) > 100):
+            if(cv2.contourArea(ctr) > 120):
                 roi = aGaussThreshold[y:y+h, x:x+w]
                 cv2.imwrite("tmp.png",roi)
                 new_img = cv2.imread("tmp.png")
@@ -51,7 +49,14 @@ class TagDetector(object):
         indis = 0
         for i in range(0, len(result)):
             j = int(result[i,0])
-            cv2.rectangle(image, (locations[j,0], locations[j,1]), (locations[j,2], locations[j,3]),(0,255,0),2)
+            if(result[i,1] == "Button"):
+                cv2.rectangle(image, (locations[j,0], locations[j,1]), (locations[j,2], locations[j,3]),(255,0,0),2)
+            elif(result[i,1] == "Image"):
+                cv2.rectangle(image, (locations[j,0], locations[j,1]), (locations[j,2], locations[j,3]),(0,0,255),2)
+            elif(result[i,1] == "Text"):
+                cv2.rectangle(image, (locations[j,0], locations[j,1]), (locations[j,2], locations[j,3]),(0,255,255),2)
+            elif(result[i,1] == "TextInput"):
+                cv2.rectangle(image, (locations[j,0], locations[j,1]), (locations[j,2], locations[j,3]),(0,255,0),2)
             cv2.putText(image,result[i,1],(locations[j,0], locations[j,1]),cv2.FONT_HERSHEY_SIMPLEX, 0.5, 127)
         cv2.imshow("Original Image",image)
         cv2.waitKey(0)

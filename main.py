@@ -17,7 +17,7 @@ if __name__ == "__main__":
     while res != 4:
         print("1 - Train")
         print("2 - Test")
-        print("3 - Resimi Kodu Dönüştür")
+        print("3 - Resimi Koda Dönüştür")
         print("4 - Çıkış")
         res = int(raw_input("----------> "))
         if res == 1:
@@ -31,11 +31,10 @@ if __name__ == "__main__":
             detector = TagDetector(path)
             data, locations = detector.detect_tags()
             
-            result = model.predict(data)
+            result, locations = model.predict(data,locations)
 
-            #code_creator = CodeCreator(locations, result)
-            #code_creator.create_code()
-            
+            code_creator = CodeCreator(locations, result)
+            code_creator.create_code()
             detector.draw_rectange(result,locations)
         
         
