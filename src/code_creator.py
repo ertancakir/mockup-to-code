@@ -16,7 +16,6 @@ class CodeCreator(object):
         return False
         
     def create_code(self):
-        print("asd")
         html = Html()
 
         output = ""
@@ -75,7 +74,7 @@ class CodeCreator(object):
         f.close()
         
         output_name = str(self.name) + ".html"
-        path = os.path.join("templates/outputs",output_name)
+        path = os.path.join("./outputs",output_name)
         f = open(path, "w")
         f.write(html_output)
         f.close()

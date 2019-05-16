@@ -35,10 +35,7 @@ class Html(object):
         return image.format(width, height)
 
     def get_text(self,text,height):
-        if height > 50:
-            t = "<h1>{}</h1>\n"
-        else:
-            t = "<span>{}</span>\n"
+        t = "<span>{}</span>\n"
         return t.format(text)
 
     def get_textInput(self, width, height):

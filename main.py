@@ -33,7 +33,7 @@ if __name__ == "__main__":
             
             result, locations = model.predict(data,locations)
 
-            code_creator = CodeCreator(locations, result)
+            code_creator = CodeCreator(locations, result,"test")
             code_creator.create_code()
             detector.draw_rectange(result,locations)
         
