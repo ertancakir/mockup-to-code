@@ -3,10 +3,17 @@
     <head>
         <title>Bitirme Çalışması</title>
         {{ dropzone.load() }}
-        {{ dropzone.style('border: 2px dashed #0087F7; margin: 10%; min-height: 400px;') }}
+        {{ dropzone.style('border: 2px dashed #0087F7; margin-top: 10%; margin-left: 10%; margin-right: 10%; margin-bottom: 2%; min-height: 400px; text: qwe;') }}
+
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     </head>
     <body>
-        <h1>Koda çevirmek istediğiniz tasarımı çizgili alana sürükleyin.</h1>
+        <br>
+        
         {{ dropzone.create(action_view='index') }}
+        <div>
+                <button class="btn btn-info btn-lg" style="display: block; margin: 0 auto;" onclick="window.location.href='{{ url_for( 'results')}}';">İndir</button>
+        </div>
     </body>
 </html>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous"></script>

@@ -2,29 +2,39 @@
 <html>
     <head>
         <title>Bitirme Çalışması</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link href="{{ url_for('static', filename='scripts/bootstrap/dist/css/bootstrap.css') }}" rel="stylesheet">
+        <!-- Bootstrap CSS -->
     </head>
     <body>
-        
+            <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-body">
+                        </div>
+                        <div class="panel-footer">
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span> İndir
+                        </div>
+                    </div>
+                </div>
+        <br><br><br>
         <div class="row">
-            <div class="col-md-4">
-                <table class="table col-md-6">
-                    <thead>
-                        <tr>
-                            <th>Sayfa Adı</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-md-4">
-                    <img src="asd.png" height="300">
-            </div>
-            <div class="col-md-4">
-                <p>asdasd</p>
-            </div>
+            {% for i in range(0,length) %}
+                <div class="col-md-4">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Panel heading without title</div>
+                        <div class="panel-body">
+                                <img src="{{ url_for('static', filename='uploads/' + input[i]) }}" height="256px" width="256px" />
+                        </div>
+                        <div class="panel-footer">
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span> İndir
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
 
 
